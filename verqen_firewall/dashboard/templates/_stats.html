@@ -1,0 +1,21 @@
+<div class="stat-grid">
+  <div class="stat">
+    <span class="stat-value">{{ stats.checked }}</span>
+    <span class="stat-label">checked</span>
+  </div>
+  <div class="stat">
+    <span class="stat-value">{{ stats.blocked }}</span>
+    <span class="stat-label">blocked</span>
+  </div>
+  <div class="stat">
+    <span class="stat-value">{{ '%.1f'|format(stats.block_rate * 100) }}%</span>
+    <span class="stat-label">block rate</span>
+  </div>
+</div>
+{% if stats.categories %}
+<ul class="category-list">
+  {% for name, count in stats.categories.items() %}
+  <li><span class="cat-name">{{ name }}</span><span class="cat-count">{{ count }}</span></li>
+  {% endfor %}
+</ul>
+{% endif %}

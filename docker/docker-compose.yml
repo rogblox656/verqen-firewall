@@ -1,0 +1,28 @@
+# VerQen firewall + dashboard.
+#
+#   cd docker && docker compose up --build
+#   dashboard: http://localhost:8000
+#
+# Set VERQEN_HOST_CHECKPOINT to a local checkpoint directory before starting.
+services:
+  firewall:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        WITH_VERQEN: "1"
+    image: verqen/firewall:latest
+    ports:
+      - "8000:8000"
+    environment:
+      VERQEN_CHECKPOINT: /models/verqen
+    volumes:
+      - ${VERQEN_HOST_CHECKPOINT:?set VERQEN_HOST_CHECKPOINT to your checkpoint dir}:/models/verqen:ro
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

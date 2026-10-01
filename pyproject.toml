@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "verqen-firewall"
+version = "1.0.0"
+description = "Sub-5ms LLM Prompt Injection Firewall powered by VerQen-T2"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "ZorQelis AI" }]
+keywords = ["llm", "security", "prompt-injection", "firewall", "guardrails", "verqen"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "fastapi>=0.115",
+    "starlette>=0.40",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+gpu = ["torch>=2.5", "safetensors>=0.4"]
+dashboard = ["jinja2>=3.1", "uvicorn[standard]>=0.30", "python-multipart>=0.0.9"]
+flask = ["flask>=3.0"]
+django = ["django>=5.0"]
+langchain = ["langchain>=0.3"]
+dev = ["pytest>=8.0", "build>=1.2"]
+
+[project.scripts]
+verqen-firewall = "verqen_firewall.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/ZorQelis-AI/verqen-firewall"
+Repository = "https://github.com/ZorQelis-AI/verqen-firewall"
+Documentation = "https://github.com/ZorQelis-AI/verqen-firewall#readme"
+"Bug Tracker" = "https://github.com/ZorQelis-AI/verqen-firewall/issues"
+
+[tool.setuptools.packages.find]
+include = ["verqen_firewall*"]
+
+[tool.setuptools.package-data]
+verqen_firewall = ["dashboard/templates/*.html", "dashboard/static/*.css"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "live: tests that need a local VerQen checkpoint (set VERQEN_CHECKPOINT)",
+]

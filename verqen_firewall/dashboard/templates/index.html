@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VerQen Firewall Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body>
+  <header>
+    <h1>VerQen Firewall</h1>
+    <p class="subtitle">Live prompt checks (block severity &ge; {{ block_severity }})</p>
+  </header>
+
+  <section class="stats" hx-get="/stats-fragment" hx-trigger="every 2s" hx-target="#stats" hx-swap="innerHTML">
+    <div id="stats">
+      {% include "_stats.html" %}
+    </div>
+  </section>
+
+  <section class="try">
+    <h2>Test a prompt</h2>
+    <form hx-post="/check" hx-target="#result" hx-swap="innerHTML">
+      <textarea name="prompt" rows="3" placeholder="Type a prompt to check..." required></textarea>
+      <button type="submit">Check</button>
+    </form>
+    <pre id="result"></pre>
+  </section>
+
+  <section class="events">
+    <h2>Recent events</h2>
+    <div>
+      <ul id="event-list" hx-get="/events-fragment" hx-trigger="every 2s" hx-swap="innerHTML">
+        <li class="muted">Waiting for events...</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <p>verqen-firewall &middot; powered by VerQen-T2 &middot; ZorQelis AI</p>
+  </footer>
+
+  <script>
+    // Initial stats + event list without waiting for the first poll.
+    htmx.trigger('.stats', 'every 2s');
+  </script>
+</body>
+</html>
